@@ -2875,5 +2875,9 @@
   "account.organization.user_management.update_user.confirmation": "The user \"{{0}}\" has been updated.",
   "subject.has.no.permission.assigned": "You do not have the required permission to perform this action.",
   "user.not.authenticated": "You are not authenticated to access this page.",
-  "search.noresult.filtered_products.message": "We are sorry, we could not find any products that match your filter choice."
+  "search.noresult.filtered_products.message": "We are sorry, we could not find any products that match your filter choice.",
+  "account.requisitions.requisitions": "Requisitions",
+  "account.requisitions.requisitions.text": "This list shows all your order requests that need to be approved by an approver. You can also view all requests that have been approved or rejected.",
+  "account.requisitions.approvals": "Approvals",
+  "account.requisitions.approvals.text": "This list shows all order requests that need to be approved by you. You can also display all the requests that you have already approved or that you have rejected."
 }
