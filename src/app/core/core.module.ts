@@ -3,6 +3,7 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { OAuthModule } from 'angular-oauth2-oidc';
 import { NgxCookieBannerModule } from 'ngx-cookie-banner';
 import { BrowserCookiesModule } from 'ngx-utils-cookies-port';
 
@@ -31,6 +32,7 @@ import { ModuleLoaderService } from './utils/module-loader/module-loader.service
     NgxCookieBannerModule.forRoot({
       cookieName: 'cookieLawSeen',
     }),
+    OAuthModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker }),
     StateManagementModule,
   ],

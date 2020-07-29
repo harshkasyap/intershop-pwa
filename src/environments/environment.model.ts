@@ -81,10 +81,9 @@ export interface Environment {
   // client-side configuration for identity providers
   identityProviders?: {
     [name: string]: {
-      type: 'oidc';
-      issuer: string;
+      type: 'auth0';
+      domain: string;
       clientID: string;
-      clientSecret: string;
     };
   };
 }
