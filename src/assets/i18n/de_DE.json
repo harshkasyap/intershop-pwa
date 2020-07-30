@@ -2871,5 +2871,19 @@
   "account.organization.user_management.update_user.confirmation": "Der Benutzer \"{{0}}\" wurde geändert.",
   "subject.has.no.permission.assigned": "Sie verfügen nicht über die erforderlichen Rechte zur Durchführung dieser Aktion.",
   "user.not.authenticated": "Sie sind für den Zugriff auf diese Seite nicht authentifiziert.",
-  "search.noresult.filtered_products.message": "Leider konnten wir keine Produkte finden, die Ihrer Filterauswahl entsprechen."
+  "search.noresult.filtered_products.message": "Leider konnten wir keine Produkte finden, die Ihrer Filterauswahl entsprechen.",
+  "account.requisitions.requisitions": "Requisitions",
+  "account.requisitions.requisitions.text": "This list shows all your order requests that need to be approved by an approver. You can also view all requests that have been approved or rejected.",
+  "account.requisitions.approvals": "Approvals",
+  "account.requisitions.approvals.text": "This list shows all order requests that need to be approved by you. You can also display all the requests that you have already approved or that you have rejected.",
+  "account.approvallist.table.id_of_order": "Bestellanfrage-Nr.",
+  "account.approvallist.table.no_of_order": "Bestellungsnummer",
+  "account.approvallist.table.purchaser": "Einkäufer",
+  "account.approvallist.table.date_of_order": "Erstellungsdatum",
+  "account.approvallist.table.line_items": "Artikel",
+  "account.approvallist.table.line_item_total": "Gesamt",
+  "account.approvallist.table.approval_date": "Genehmigungsdatum",
+  "account.approvallist.table.reject_date": "Ablehnungsdatum",
+  "account.approvallist.table.approver": "Genehmiger",
+  "account.approvallist.no_items_message": "Sie haben derzeit keine Bestellungen."
 }
