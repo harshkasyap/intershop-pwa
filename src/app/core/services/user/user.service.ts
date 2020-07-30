@@ -68,16 +68,21 @@ export class UserService {
       );
   }
 
-  signinUserByToken(apiToken: string): Observable<CustomerUserType> {
-    const headers = new HttpHeaders().set(ApiService.TOKEN_HEADER_KEY, apiToken);
+  signinUserByToken(apiToken: string, isIdToken = false, email = '-'): Observable<CustomerUserType> {
+    let headers: HttpHeaders;
+    if (isIdToken) {
+      headers = new HttpHeaders().set(ApiService.AUTHORIZATION_HEADER_KEY, 'Bearer ' + apiToken);
+    } else {
+      headers = new HttpHeaders().set(ApiService.TOKEN_HEADER_KEY, apiToken);
+    }
     return this.apiService
-      .get<CustomerData>('customers/-', { headers, skipApiErrorHandling: true, runExclusively: true })
+      .get<CustomerData>('customers/' + email, { headers, skipApiErrorHandling: true, runExclusively: true })
       .pipe(
         withLatestFrom(this.appFacade.isAppTypeREST$),
         concatMap(([data, isAppTypeRest]) =>
           // ToDo: #IS-30018 use the customer type for this decision
           isAppTypeRest && !data.companyName
-            ? this.apiService.get<CustomerData>('privatecustomers/-', { headers })
+            ? this.apiService.get<CustomerData>('privatecustomers/' + email, { headers })
             : of(data)
         ),
         map(CustomerMapper.mapLoginData),
@@ -90,7 +95,7 @@ export class UserService {
    * @param body  The user data (customer, user, credentials, address) to create a new user.
    */
   createUser(body: CustomerRegistrationType): Observable<void> {
-    if (!body || !body.customer || !body.user || !body.credentials || !body.address) {
+    if (!body || !body.customer || !body.user /*|| !body.credentials*/ || !body.address) {
       return throwError('createUser() called without required body data');
     }
 
@@ -121,8 +126,8 @@ export class UserService {
     return this.appFacade.isAppTypeREST$.pipe(
       first(),
       concatMap(isAppTypeRest =>
-        this.apiService.post<void>(
-          AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer, isAppTypeRest),
+        this.apiService.put<void>(
+          AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer, isAppTypeRest) + '/-',
           newCustomer,
           {
             captcha: pick(body, ['captcha', 'captchaAction']),

@@ -32,7 +32,13 @@ import { ModuleLoaderService } from './utils/module-loader/module-loader.service
     NgxCookieBannerModule.forRoot({
       cookieName: 'cookieLawSeen',
     }),
-    OAuthModule.forRoot(),
+    OAuthModule.forRoot({
+      resourceServer: {
+        // allowedUrls: ['https://demo-auth0.test.intershop.com/INTERSHOP/rest'],
+        sendAccessToken: false,
+        customUrlValidation: () => true,
+      },
+    }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker }),
     StateManagementModule,
   ],

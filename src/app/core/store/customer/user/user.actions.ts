@@ -64,7 +64,10 @@ export const updateCustomerFail = createAction('[User API] Update Customer Faile
 
 export const userErrorReset = createAction('[User Internal] Reset User Error');
 
-export const loadUserByAPIToken = createAction('[User] Load User by API Token', payload<{ apiToken: string }>());
+export const loadUserByAPIToken = createAction(
+  '[User] Load User by API Token',
+  payload<{ apiToken: string; isIdToken?: boolean; email?: string }>()
+);
 
 export const setPGID = createAction('[User Internal] Set PGID', payload<{ pgid: string }>());
 

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
+import { OAuthService } from 'angular-oauth2-oidc';
 import { EMPTY, merge, of, race, timer } from 'rxjs';
 import {
   catchError,
@@ -78,7 +79,8 @@ export class UserEffects {
     private userService: UserService,
     private paymentService: PaymentService,
     private personalizationService: PersonalizationService,
-    private router: Router
+    private router: Router,
+    private oauthService: OAuthService
   ) {}
 
   loginUser$ = createEffect(() =>
@@ -166,10 +168,12 @@ export class UserEffects {
       mergeMap((data: CustomerRegistrationType) =>
         this.userService.createUser(data).pipe(
           // TODO:see #IS-22750 - user should actually be logged in after registration
-          map(() => loginUser({ credentials: data.credentials })),
+          // map(() => loginUser({ credentials: data.credentials })),
+          mapTo(loadUserByAPIToken({ apiToken: this.oauthService.getIdToken(), isIdToken: true })),
+          tap(console.log, console.error, console.log),
           catchError(error =>
             of(
-              error.headers.has('error-key')
+              error.headers?.has('error-key')
                 ? createUserFail({ error: HttpErrorMapper.fromError(error) })
                 : generalError({ error: HttpErrorMapper.fromError(error) })
             )
@@ -274,8 +278,10 @@ export class UserEffects {
   loadUserByAPIToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUserByAPIToken),
-      mapToPayloadProperty('apiToken'),
-      concatMap(apiToken => this.userService.signinUserByToken(apiToken).pipe(map(loginUserSuccess)))
+      mapToPayload(),
+      concatMap(({ apiToken, isIdToken, email }) =>
+        this.userService.signinUserByToken(apiToken, isIdToken, email).pipe(map(loginUserSuccess))
+      )
     )
   );
 

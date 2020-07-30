@@ -10,7 +10,6 @@ import {
   debounceTime,
   distinctUntilChanged,
   map,
-  mergeMap,
   switchMap,
   take,
   takeWhile,
@@ -20,8 +19,6 @@ import {
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
-import { Customer } from 'ish-core/models/customer/customer.model';
-import { User } from 'ish-core/models/user/user.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { log } from 'ish-core/utils/dev/operators';
@@ -191,21 +188,17 @@ export class ConfigurationEffects {
         console.log('OAuthService configured');
       }),
       switchMap(() => from(this.oauthService.loadDiscoveryDocumentAndTryLogin())),
-      log('discovery document available'),
-      mergeMap(available => {
-        if (available) {
-          const claims = this.oauthService.getIdentityClaims() as { email: string };
-          if (claims) {
-            return [
-              loginUserSuccess({
-                customer: {} as Customer,
-                user: { lastName: claims.email, login: claims.email } as User,
-              }),
-            ];
-          }
-        }
-        return [];
-      })
+      // map(() => this.oauthService.getAccessToken()),
+      map(() => this.oauthService.getIdToken()),
+      log(),
+      whenTruthy(),
+      map(() => {
+        const { email } = this.oauthService.getIdentityClaims() as { email: string };
+        // tslint:disable-next-line: no-string-literal
+        // loadUserByAPIToken({ apiToken, isIdToken: true, email: this.oauthService.getIdentityClaims()['email'] })
+        return loginUserSuccess({ user: { login: email, email } as any, customer: {} as any });
+      }),
+      log()
     )
   );
 }

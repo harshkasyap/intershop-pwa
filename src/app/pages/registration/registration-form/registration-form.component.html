@@ -7,7 +7,7 @@
 
 <div class="registration-form section" data-testing-id="account-create-full-page">
   <form [formGroup]="form" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
-    <h2>{{ 'account.register.email_password.heading' | translate }}</h2>
+    <!-- <h2>{{ 'account.register.email_password.heading' | translate }}</h2>
     <p>{{ 'account.register.email_password.message' | translate }}</p>
     <div class="section">
       <div class="row">
@@ -18,7 +18,7 @@
           <ish-registration-credentials-form [parentForm]="form"></ish-registration-credentials-form>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <h2>
       <ng-container *ngIf="businessCustomerRegistration; else b2cRegistrationSubTitle">{{

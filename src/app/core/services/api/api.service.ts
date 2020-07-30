@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { OAuthService } from 'angular-oauth2-oidc';
 import {
   MonoTypeOperatorFunction,
   Observable,
@@ -50,7 +51,8 @@ export class ApiService {
   constructor(
     private httpClient: HttpClient,
     private apiServiceErrorHandler: ApiServiceErrorHandler,
-    private store: Store
+    private store: Store,
+    private oauthService: OAuthService
   ) {}
 
   /**
@@ -60,9 +62,12 @@ export class ApiService {
     return headers$ =>
       headers$.pipe(
         withLatestFrom(this.store.pipe(select(getAPIToken))),
-        map(([headers, apiToken]) =>
-          apiToken && !headers.has(ApiService.AUTHORIZATION_HEADER_KEY)
-            ? headers.set(ApiService.TOKEN_HEADER_KEY, apiToken)
+        map(([headers]) =>
+          // apiToken && !headers.has(ApiService.AUTHORIZATION_HEADER_KEY)
+          //   ? headers.set(ApiService.TOKEN_HEADER_KEY, apiToken)
+          //   : headers
+          this.oauthService.getIdToken()
+            ? headers.set(ApiService.AUTHORIZATION_HEADER_KEY, 'Bearer ' + this.oauthService.getIdToken())
             : headers
         ),
         // TODO: workaround removing auth token for cms if pgid is not available

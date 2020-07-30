@@ -19,7 +19,6 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { AddressFormFactoryProvider } from 'ish-shared/address-forms/configurations/address-form-factory.provider';
 import { markAsDirtyRecursive, markFormControlsAsInvalid } from 'ish-shared/forms/utils/form-utils';
-import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 @Component({
   selector: 'ish-registration-form',
@@ -57,20 +56,20 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
 
   private createRegistrationForm(): void {
     this.form = this.fb.group({
-      credentials: this.fb.group(
-        {
-          login: ['', [Validators.required, SpecialValidators.email]],
-          loginConfirmation: ['', [Validators.required, SpecialValidators.email]],
-          password: ['', [Validators.required, SpecialValidators.password]],
-          passwordConfirmation: ['', [Validators.required, SpecialValidators.password]],
-        },
-        {
-          validators: [
-            SpecialValidators.equalTo('loginConfirmation', 'login'),
-            SpecialValidators.equalTo('passwordConfirmation', 'password'),
-          ],
-        }
-      ),
+      // credentials: this.fb.group(
+      //   {
+      //     login: ['', [Validators.required, SpecialValidators.email]],
+      //     loginConfirmation: ['', [Validators.required, SpecialValidators.email]],
+      //     password: ['', [Validators.required, SpecialValidators.password]],
+      //     passwordConfirmation: ['', [Validators.required, SpecialValidators.password]],
+      //   },
+      //   {
+      //     validators: [
+      //       SpecialValidators.equalTo('loginConfirmation', 'login'),
+      //       SpecialValidators.equalTo('passwordConfirmation', 'password'),
+      //     ],
+      //   }
+      // ),
       countryCodeSwitch: ['', [Validators.required]],
       preferredLanguage: ['en_US', [Validators.required]],
       birthday: [''],
@@ -122,16 +121,16 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
       title: formValue.address.title,
       firstName: formValue.address.firstName,
       lastName: formValue.address.lastName,
-      email: formValue.credentials.login,
+      // email: formValue.credentials.login,
       phoneHome: formValue.address.phoneHome,
       birthday: formValue.birthday === '' ? undefined : formValue.birthday, // TODO: see IS-22276
       preferredLanguage: formValue.preferredLanguage,
     };
 
-    const credentials: Credentials = {
-      login: formValue.credentials.login,
-      password: formValue.credentials.password,
-    };
+    // const credentials: Credentials = {
+    //   login: formValue.credentials.login,
+    //   password: formValue.credentials.password,
+    // };
 
     if (this.businessCustomerRegistration) {
       customer.isBusinessCustomer = true;
@@ -141,9 +140,9 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
       user.businessPartnerNo = 'U' + customer.customerNo;
     }
 
-    const registration: CustomerRegistrationType = { customer, user, credentials, address };
-    registration.captcha = this.form.get('captcha').value;
-    registration.captchaAction = this.form.get('captchaAction').value;
+    const registration: CustomerRegistrationType = { customer, user /*, credentials*/, address };
+    // registration.captcha = this.form.get('captcha').value;
+    // registration.captchaAction = this.form.get('captchaAction').value;
 
     this.create.emit(registration);
   }
