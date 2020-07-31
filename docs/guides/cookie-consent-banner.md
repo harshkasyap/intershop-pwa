@@ -1,15 +1,15 @@
-<div [ngClass]="wrapperClasses$ | async">
-  <header data-testing-id="page-header" class="top"><ish-header></ish-header></header>
+<!--
+kb_guide
+kb_pwa
+kb_everyone
+kb_sync_latest_only
+-->
 
-  <div class="wrapper">
-    <div role="main" class="container main-container" style="position: relative; min-height: 200px;">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+# Cookie Consent Banner
 
-  <footer data-testing-id="section-footer"><ish-footer [deviceType]="deviceType$ | async"></ish-footer></footer>
-</div>
+The configuration of the cookie consent banner is placed in `app.component.html`
 
+```html
 <ish-cookie-banner
   [options]="{
     updatedAt: 'Mon Jul 27 2020 12:03:39 GMT+0200',
@@ -34,3 +34,13 @@
     ]
   }"
 ></ish-cookie-banner>
+```
+
+Options:
+
+`updatedAt` is the the date of the latest update of your privacy policy.
+If this date is newer than the date in the client cookie, the banner will show again.
+
+`options` contains the items for cookie consent.
+The first item should be the "required" option to parse whitelistedCookies correctly.
+The option with id "tracking" is currently used to start google-tag-manager and sentry error logging if enabled.

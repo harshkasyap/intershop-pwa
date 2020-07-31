@@ -1,0 +1,18 @@
+<div *ngIf="showBanner" class="container-fluid cookie-banner">
+  <div class="row">
+    <div class="col">
+      <div [ishServerHtml]="'cookie_consent.banner.text' | translate"></div>
+      <div>
+        <button type="button" class="btn btn-light float-right" (click)="acceptAll()">
+          {{ 'cookie_consent.banner.accept_all' | translate }}
+        </button>
+      </div>
+      <div>
+        <button type="button" class="btn btn-outline-light float-right" (click)="showDialog()">
+          {{ 'cookie_consent.banner.set_preferences' | translate }}
+        </button>
+      </div>
+      <br clear="right" />
+    </div>
+  </div>
+</div>

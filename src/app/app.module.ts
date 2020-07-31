@@ -5,13 +5,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from 'ish-core/core.module';
 
 import { AppComponent } from './app.component';
+import { CookieBannerComponent } from './extensions/cookie-consent/shared/components/cookie-banner/cookie-banner.component';
 import { QuickorderRoutingModule } from './extensions/quickorder/pages/quickorder-routing.module';
 import { AppLastRoutingModule } from './pages/app-last-routing.module';
 import { AppRoutingModule } from './pages/app-routing.module';
 import { ShellModule } from './shell/shell.module';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, CookieBannerComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'intershop-pwa' }),
     BrowserAnimationsModule,

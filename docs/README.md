@@ -46,6 +46,7 @@ kb_sync_latest_only
 - [Guide - Migration](./guides/migrations.md)
 - [Concept - URL Rewriting](./concepts/url-rewriting.md)
 - [Guide - Mocking REST API Calls](./guides/mocking-rest-calls.md)
+- [Guide - Setup Cookie Consent](./guides/cookie-consent-banner.md)
 
 ### Maintenance
 

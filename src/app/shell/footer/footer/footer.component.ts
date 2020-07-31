@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, OnInit, P
 import { TransferState } from '@angular/platform-browser';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
+import { CookieFacade } from 'ish-core/facades/cookie.facade';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 /**
@@ -22,7 +23,11 @@ export class FooterComponent implements OnInit, OnChanges {
 
   appVersion: string;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: string, private transferState: TransferState) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: string,
+    private transferState: TransferState,
+    private cookieFacade: CookieFacade
+  ) {}
 
   collapsed: boolean[] = [false, false, false, false, false, false];
 
@@ -36,5 +41,11 @@ export class FooterComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.collapsed = this.collapsed.map(() => this.deviceType === 'mobile');
+  }
+
+  openCookieDialog() {
+    return () => {
+      this.cookieFacade.openCookieDialog$.next();
+    };
   }
 }
