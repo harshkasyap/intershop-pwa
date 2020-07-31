@@ -13,7 +13,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { UUID } from 'angular2-uuid';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';

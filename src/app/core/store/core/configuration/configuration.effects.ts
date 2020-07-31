@@ -20,7 +20,7 @@ import {
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
-import { loginUserSuccess } from 'ish-core/store/customer/user';
+import { loadUserByAPIToken } from 'ish-core/store/customer/user';
 import { log } from 'ish-core/utils/dev/operators';
 import { distinctCompareWith, mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
@@ -192,11 +192,11 @@ export class ConfigurationEffects {
       map(() => this.oauthService.getIdToken()),
       // delay(2000),
       whenTruthy(),
-      map(() => {
+      map(apiToken => {
         const { email } = this.oauthService.getIdentityClaims() as { email: string };
         // tslint:disable-next-line: no-string-literal
-        // return loadUserByAPIToken({ apiToken, isIdToken: true, email });
-        return loginUserSuccess({ user: { login: email, email } as any, customer: {} as any });
+        return loadUserByAPIToken({ apiToken, isIdToken: true, email });
+        // return loginUserSuccess({ user: { login: email, email } as any, customer: {} as any });
       }),
       log()
     )

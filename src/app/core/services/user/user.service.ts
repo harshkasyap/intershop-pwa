@@ -2,8 +2,8 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import b64u from 'b64u';
 import { pick } from 'lodash-es';
-import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, delay, first, map, retryWhen, take, withLatestFrom } from 'rxjs/operators';
+import { EMPTY, Observable, of, throwError, timer } from 'rxjs';
+import { catchError, concatMap, first, map, retryWhen, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -78,7 +78,12 @@ export class UserService {
     return this.apiService
       .get<CustomerData>('customers/' + email, { headers, skipApiErrorHandling: true, runExclusively: true })
       .pipe(
-        retryWhen(errors => errors.pipe(delay(2000), take(10))),
+        retryWhen(errors =>
+          errors.pipe(
+            take(10),
+            switchMap((error: { status: number }) => (error.status === 401 ? timer(1000) : throwError(error)))
+          )
+        ),
         withLatestFrom(this.appFacade.isAppTypeREST$),
         concatMap(([data, isAppTypeRest]) =>
           // ToDo: #IS-30018 use the customer type for this decision
