@@ -125,7 +125,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
       phoneHome: formValue.address.phoneHome,
       birthday: formValue.birthday === '' ? undefined : formValue.birthday, // TODO: see IS-22276
       preferredLanguage: formValue.preferredLanguage,
-    };
+    } as any;
 
     // const credentials: Credentials = {
     //   login: formValue.credentials.login,
@@ -140,7 +140,7 @@ export class RegistrationFormComponent implements OnInit, OnChanges {
       user.businessPartnerNo = 'U' + customer.customerNo;
     }
 
-    const registration: CustomerRegistrationType = { customer, user /*, credentials*/, address };
+    const registration: CustomerRegistrationType = { customer, user /*, credentials*/, address } as any;
     // registration.captcha = this.form.get('captcha').value;
     // registration.captchaAction = this.form.get('captchaAction').value;
 

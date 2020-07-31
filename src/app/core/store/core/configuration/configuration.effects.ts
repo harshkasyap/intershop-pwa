@@ -190,12 +190,12 @@ export class ConfigurationEffects {
       switchMap(() => from(this.oauthService.loadDiscoveryDocumentAndTryLogin())),
       // map(() => this.oauthService.getAccessToken()),
       map(() => this.oauthService.getIdToken()),
-      log(),
+      // delay(2000),
       whenTruthy(),
       map(() => {
         const { email } = this.oauthService.getIdentityClaims() as { email: string };
         // tslint:disable-next-line: no-string-literal
-        // loadUserByAPIToken({ apiToken, isIdToken: true, email: this.oauthService.getIdentityClaims()['email'] })
+        // return loadUserByAPIToken({ apiToken, isIdToken: true, email });
         return loginUserSuccess({ user: { login: email, email } as any, customer: {} as any });
       }),
       log()

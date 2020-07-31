@@ -279,8 +279,8 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(loadUserByAPIToken),
       mapToPayload(),
-      concatMap(({ apiToken, isIdToken, email }) =>
-        this.userService.signinUserByToken(apiToken, isIdToken, email).pipe(map(loginUserSuccess))
+      concatMap(({ apiToken, isIdToken }) =>
+        this.userService.signinUserByToken(apiToken, isIdToken).pipe(map(loginUserSuccess))
       )
     )
   );

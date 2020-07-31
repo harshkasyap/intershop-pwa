@@ -112,21 +112,21 @@ export class RestoreEffects {
     )
   );
 
-  logOutUserIfTokenVanishes$ = createEffect(() =>
-    this.appRef.isStable.pipe(
-      whenTruthy(),
-      first(),
-      concatMapTo(
-        interval(1000).pipe(
-          takeWhile(() => isPlatformBrowser(this.platformId)),
-          withLatestFrom(this.store$.pipe(select(getLoggedInUser))),
-          map(([, user]) => ({ user, apiToken: this.cookieService.get('apiToken') })),
-          filter(({ user, apiToken }) => user && !apiToken),
-          mapTo(logoutUser())
-        )
-      )
-    )
-  );
+  // logOutUserIfTokenVanishes$ = createEffect(() =>
+  //   this.appRef.isStable.pipe(
+  //     whenTruthy(),
+  //     first(),
+  //     concatMapTo(
+  //       interval(1000).pipe(
+  //         takeWhile(() => isPlatformBrowser(this.platformId)),
+  //         withLatestFrom(this.store$.pipe(select(getLoggedInUser))),
+  //         map(([, user]) => ({ user, apiToken: this.cookieService.get('apiToken') })),
+  //         filter(({ user, apiToken }) => user && !apiToken),
+  //         mapTo(logoutUser())
+  //       )
+  //     )
+  //   )
+  // );
 
   removeAnonymousBasketIfTokenVanishes$ = createEffect(() =>
     this.appRef.isStable.pipe(
