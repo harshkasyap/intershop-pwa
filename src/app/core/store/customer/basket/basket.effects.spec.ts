@@ -16,6 +16,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
 import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -60,6 +61,7 @@ describe('Basket Effects', () => {
         BasketEffects,
         provideMockActions(() => actions$),
         { provide: BasketService, useFactory: () => instance(basketServiceMock) },
+        { provide: ApiTokenService, useFactory: () => instance(mock(ApiTokenService)) },
       ],
     });
 

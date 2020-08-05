@@ -10,6 +10,9 @@ export interface Environment {
   icmServer: string;
   icmServerStatic: string;
 
+  // temporarily hard-coded identity provider ID, later supplied by configurations call
+  identityProvider: 'ICM' | string;
+
   // application specific
   icmChannel: string;
   icmApplication?: string;
@@ -74,6 +77,13 @@ export interface Environment {
   // configuration of the styling theme ('default' if not configured)
   // format: 'themeName|themeColor' e.g. theme: 'blue|688dc3',
   theme?: string;
+
+  // client-side configuration for identity providers
+  identityProviders?: {
+    [name: string]: {
+      type: string;
+    };
+  };
 }
 
 export const ENVIRONMENT_DEFAULTS: Environment = {
@@ -83,6 +93,7 @@ export const ENVIRONMENT_DEFAULTS: Environment = {
   icmServer: 'INTERSHOP/rest/WFS',
   icmServerStatic: 'INTERSHOP/static/WFS',
   icmApplication: 'rest',
+  identityProvider: 'ICM',
 
   production: false,
   mockServerAPI: false,

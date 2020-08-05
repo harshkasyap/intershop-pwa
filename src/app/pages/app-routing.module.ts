@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { FeatureToggleGuard } from 'ish-core/feature-toggle.module';
 import { AuthGuard } from 'ish-core/guards/auth.guard';
-import { LoginGuard } from 'ish-core/guards/login.guard';
-import { LogoutGuard } from 'ish-core/guards/logout.guard';
+import { IdentityProviderLoginGuard } from 'ish-core/guards/identity-provider-login.guard';
+import { IdentityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -107,7 +107,7 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./login/login-page.module').then(m => m.LoginPageModule),
-    canActivate: [LoginGuard],
+    canActivate: [IdentityProviderLoginGuard],
     data: {
       meta: {
         title: 'account.login.link',
@@ -117,7 +117,7 @@ const routes: Routes = [
   },
   {
     path: 'logout',
-    canActivate: [LogoutGuard],
+    canActivate: [IdentityProviderLogoutGuard],
     children: [],
   },
   {
