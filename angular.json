@@ -40,7 +40,8 @@
                 "bundleName": "blue"
               }
             ],
-            "scripts": []
+            "scripts": [],
+            "preserveSymlinks": true
           },
           "configurations": {
             "production": {
