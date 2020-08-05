@@ -1,5 +1,6 @@
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { Auth0Config } from 'ish-core/utils/identity-provider/auth0.identity-provider';
 
 export interface Environment {
   production: boolean;
@@ -80,9 +81,7 @@ export interface Environment {
 
   // client-side configuration for identity providers
   identityProviders?: {
-    [name: string]: {
-      type: string;
-    };
+    [name: string]: Auth0Config;
   };
 }
 
