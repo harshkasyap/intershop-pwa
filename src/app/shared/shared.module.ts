@@ -1,3 +1,4 @@
+import { CdkTableModule } from '@angular/cdk/table';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -108,6 +109,7 @@ const importExportModules = [
   AddressFormsSharedModule,
   AuthorizationToggleModule,
   CMSModule,
+  CdkTableModule,
   CommonModule,
   DeferLoadModule,
   FeatureToggleModule,

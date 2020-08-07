@@ -27,6 +27,7 @@
     [requisitions]="requisitions$ | async"
     [requisitionStatus]="status"
     view="approver"
+    [displayedColumns]="['requisitionNo', 'creationDate']"
   ></ish-requisitions-list>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>

@@ -1,3 +1,4 @@
+import { CdkTableModule } from '@angular/cdk/table';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -53,6 +54,7 @@ const exportedComponents = [
   imports: [
     ...importExportModules,
     AuthorizationToggleModule,
+    CdkTableModule,
     CommonModule,
     DeferLoadModule,
     FeatureToggleModule,
