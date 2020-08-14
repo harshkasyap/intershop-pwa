@@ -1,4 +1,123 @@
 <ng-container *ngIf="requisitions?.length > 0; else emptyList">
+  <!-- start requisition list with material -->
+  <table
+    cdk-table
+    [dataSource]="requisitions"
+    class="table table-card-view-mobile mobile-optimized"
+    data-testing-id="requisition-list"
+  >
+    <!-- Requisition No -->
+    <ng-container cdkColumnDef="requisitionNo">
+      <th cdk-header-cell *cdkHeaderCellDef>
+        {{ 'account.approvallist.table.id_of_order' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let requisition" [attr.data-th]="'account.approvallist.table.id_of_order' | translate">
+        <!-- TODO: routing must work for standalone usage, needs to be more relative without the 'account' part -->
+        <a [routerLink]="['/account/requisitions/' + view, requisition.id, { requisitionStatus: requisitionStatus }]">{{
+          requisition.requisitionNo
+        }}</a>
+      </td>
+    </ng-container>
+
+    <!-- Order No -->
+    <ng-container cdkColumnDef="orderNo">
+      <th cdk-header-cell *cdkHeaderCellDef>
+        {{ 'account.approvallist.table.no_of_order' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let requisition" [attr.data-th]="'account.approvallist.table.no_of_order' | translate">
+        <a [routerLink]="'/account/orders/' + requisition.id">{{ requisition.orderNo }}</a>
+      </td>
+    </ng-container>
+
+    <!-- Creation Date -->
+    <ng-container cdkColumnDef="creationDate">
+      <th cdk-header-cell *cdkHeaderCellDef>
+        {{ 'account.approvallist.table.date_of_order' | translate }}
+      </th>
+      <td
+        cdk-cell
+        *cdkCellDef="let requisition"
+        [attr.data-th]="'account.approvallist.table.date_of_order' | translate"
+      >
+        {{ requisition.creationDate | ishDate }}
+      </td>
+    </ng-container>
+
+    <!-- Approver -->
+    <ng-container cdkColumnDef="approver">
+      <th cdk-header-cell *cdkHeaderCellDef>
+        {{ 'account.approvallist.table.approver' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let requisition" [attr.data-th]="'account.approvallist.table.approver' | translate">
+        {{ requisition.approval?.approver?.firstName }} {{ requisition.approval?.approver?.lastName }}
+      </td>
+    </ng-container>
+
+    <!-- Buyer -->
+    <ng-container cdkColumnDef="buyer">
+      <th cdk-header-cell *cdkHeaderCellDef>
+        {{ 'account.approvallist.table.purchaser' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let requisition" [attr.data-th]="'account.approvallist.table.purchaser' | translate">
+        {{ requisition.user.firstName }} {{ requisition.user.lastName }}
+      </td>
+    </ng-container>
+
+    <!-- Approval/Rejection Date -->
+    <ng-container cdkColumnDef="approvalDate">
+      <ng-container *ngIf="requisitionStatus === 'approved'; else tableHeaderItemRejected">
+        <th cdk-header-cell *cdkHeaderCellDef>
+          {{ 'account.approvallist.table.approval_date' | translate }}
+        </th>
+        <td
+          cdk-cell
+          *cdkCellDef="let requisition"
+          [attr.data-th]="'account.approvallist.table.approval_date' | translate"
+        >
+          {{ requisition.approval.approvalDate | ishDate }}
+        </td>
+      </ng-container>
+      <ng-template #tableHeaderItemRejected>
+        <th cdk-header-cell *cdkHeaderCellDef>
+          {{ 'account.approvallist.table.reject_date' | translate }}
+        </th>
+        <td
+          cdk-cell
+          *cdkCellDef="let requisition"
+          [attr.data-th]="'account.approvallist.table.reject_date' | translate"
+        >
+          {{ requisition.approval.approvalDate | ishDate }}
+        </td>
+      </ng-template>
+    </ng-container>
+
+    <!-- Items count -->
+    <ng-container cdkColumnDef="lineItems">
+      <th cdk-header-cell *cdkHeaderCellDef>
+        {{ 'account.approvallist.table.line_items' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let requisition" [attr.data-th]="'account.approvallist.table.line_items' | translate">
+        {{ requisition.lineItemCount }}
+      </td>
+    </ng-container>
+
+    <!-- Total -->
+    <ng-container cdkColumnDef="orderTotal">
+      <th cdk-header-cell *cdkHeaderCellDef class="text-right">
+        {{ 'account.approvallist.table.line_item_total' | translate }}
+      </th>
+      <td cdk-cell *cdkCellDef="let requisition" class="text-right">
+        {{ requisition.totals.total | ishPrice: 'gross' }}
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <!-- end requisition list with material -->
+
+  <!-- start classic table left here for styling reference
   <div class="list-body" data-testing-id="requisition-list">
     <div class="list-header d-md-flex">
       <div class="list-header-item col-sm-2 list-header-item-descr">
@@ -35,165 +154,45 @@
     <div class="list-body">
       <ng-container *ngFor="let requisition of requisitions">
         <div class="list-item-row-big list-item-row d-flex flex-row flex-wrap">
-          <!--Requisition No -->
           <div class="col-12 col-md-2 list-item">
             <label class="d-xl-none d-lg-none d-md-none control-label">
               {{ 'account.approvallist.table.id_of_order' | translate }}</label
             >
-            <!-- TODO: routing must work for standalone usage, needs to be more relative without the 'account' part -->
             <a
               [routerLink]="['/account/requisitions/' + view, requisition.id, { requisitionStatus: requisitionStatus }]"
               >{{ requisition.requisitionNo }}</a
             >
           </div>
 
-          <!--Order No -->
           <div *ngIf="requisitionStatus === 'approved'" class="col-12 col-md-2 list-item">
             <a [routerLink]="'/account/orders/' + requisition.id">{{ requisition.orderNo }}</a>
           </div>
 
-          <!-- Creation Date -->
           <div class="col-7 col-md-2 list-item">{{ requisition.creationDate | ishDate }}</div>
 
-          <!-- Approver -->
           <div *ngIf="view === 'buyer' && requisitionStatus !== 'pending'" class="col-7 col-md-2 list-item">
             {{ requisition.approval?.approver?.firstName }} {{ requisition.approval?.approver?.lastName }}
           </div>
 
-          <!-- Buyer -->
           <div *ngIf="view === 'approver'" class="col-7 col-md-2 list-item">
             {{ requisition.user.firstName }} {{ requisition.user.lastName }}
           </div>
 
-          <!-- Approval/Rejection Date -->
           <div *ngIf="requisitionStatus !== 'pending'" class="col-7 col-md-2 list-item">
             {{ requisition.approval.approvalDate | ishDate }}
           </div>
 
-          <!-- Items count -->
           <div *ngIf="requisitionStatus !== 'approved'" class="col-7 col-md-2 list-item">
             {{ requisition.lineItemCount }}
           </div>
 
-          <!-- Total -->
           <div class="col-7 col-md-2 list-item text-right">{{ requisition.totals.total | ishPrice: 'gross' }}</div>
         </div>
       </ng-container>
     </div>
   </div>
+  end classic table left here for styling reference -->
 </ng-container>
-
-<!------ start requisition list with material ------->
-<table
-  cdk-table
-  [dataSource]="requisitions"
-  class="table table-card-view-mobile mobile-optimized"
-  data-testing-id="requisition-list"
->
-  <!--Requisition No -->
-  <ng-container cdkColumnDef="requisitionNo">
-    <th cdk-header-cell *cdkHeaderCellDef>
-      {{ 'account.approvallist.table.id_of_order' | translate }}
-    </th>
-    <td cdk-cell *cdkCellDef="let requisition" [attr.data-th]="'account.approvallist.table.id_of_order' | translate">
-      <a [routerLink]="['/account/requisitions/' + view, requisition.id, { requisitionStatus: requisitionStatus }]">{{
-        requisition.requisitionNo
-      }}</a>
-    </td>
-  </ng-container>
-
-  <!--Order No -->
-  <!--<ng-container *ngIf="requisitionStatus === 'approved'" cdkColumnDef="orderNo">-->
-  <ng-container cdkColumnDef="orderNo">
-    <th cdk-header-cell *cdkHeaderCellDef>
-      {{ 'account.approvallist.table.no_of_order' | translate }}
-    </th>
-    <td cdk-cell *cdkCellDef="let requisition" [attr.data-th]="'account.approvallist.table.no_of_order' | translate">
-      <a [routerLink]="'/account/orders/' + requisition.id">{{ requisition.orderNo }}</a>
-    </td>
-  </ng-container>
-
-  <!-- Creation Date -->
-  <ng-container cdkColumnDef="creationDate">
-    <th cdk-header-cell *cdkHeaderCellDef>
-      {{ 'account.approvallist.table.date_of_order' | translate }}
-    </th>
-    <td cdk-cell *cdkCellDef="let requisition" [attr.data-th]="'account.approvallist.table.date_of_order' | translate">
-      {{ requisition.creationDate | ishDate }}
-    </td>
-  </ng-container>
-
-  <!-- Approver -->
-  <!--<ng-container *ngIf="view === 'buyer' && requisitionStatus !== 'pending'" cdkColumnDef="approver">-->
-  <ng-container cdkColumnDef="approver">
-    <th cdk-header-cell *cdkHeaderCellDef>
-      {{ 'account.approvallist.table.approver' | translate }}
-    </th>
-    <td cdk-cell *cdkCellDef="let requisition" [attr.data-th]="'account.approvallist.table.approver' | translate">
-      {{ requisition.approval?.approver?.firstName }} {{ requisition.approval?.approver?.lastName }}
-    </td>
-  </ng-container>
-
-  <!-- Buyer -->
-  <!--<ng-container *ngIf="view === 'approver'" cdkColumnDef="buyer">-->
-  <ng-container cdkColumnDef="buyer">
-    <th cdk-header-cell *cdkHeaderCellDef>
-      {{ 'account.approvallist.table.purchaser' | translate }}
-    </th>
-    <td cdk-cell *cdkCellDef="let requisition" [attr.data-th]="'account.approvallist.table.purchaser' | translate">
-      {{ requisition.user.firstName }} {{ requisition.user.lastName }}
-    </td>
-  </ng-container>
-
-  <!-- Approval/Rejection Date -->
-  <!--<ng-container *ngIf="requisitionStatus !== 'pending'" cdkColumnDef="approvalDate">-->
-  <ng-container cdkColumnDef="approvalDate">
-    <ng-container *ngIf="requisitionStatus === 'approved'; else tableHeaderItemRejected">
-      <th cdk-header-cell *cdkHeaderCellDef>
-        {{ 'account.approvallist.table.approval_date' | translate }}
-      </th>
-      <td
-        cdk-cell
-        *cdkCellDef="let requisition"
-        [attr.data-th]="'account.approvallist.table.approval_date' | translate"
-      >
-        {{ requisition.approval.approvalDate | ishDate }}
-      </td>
-    </ng-container>
-    <ng-template #tableHeaderItemRejected>
-      <th cdk-header-cell *cdkHeaderCellDef>
-        {{ 'account.approvallist.table.reject_date' | translate }}
-      </th>
-      <td cdk-cell *cdkCellDef="let requisition" [attr.data-th]="'account.approvallist.table.reject_date' | translate">
-        {{ requisition.approval.approvalDate | ishDate }}
-      </td>
-    </ng-template>
-  </ng-container>
-
-  <!-- Items count -->
-  <!--<ng-container *ngIf="requisitionStatus !== 'approved'" cdkColumnDef="lineItems">-->
-  <ng-container cdkColumnDef="lineItems">
-    <th cdk-header-cell *cdkHeaderCellDef>
-      {{ 'account.approvallist.table.line_items' | translate }}
-    </th>
-    <td cdk-cell *cdkCellDef="let requisition" [attr.data-th]="'account.approvallist.table.line_items' | translate">
-      {{ requisition.lineItemCount }}
-    </td>
-  </ng-container>
-
-  <!-- Total -->
-  <ng-container cdkColumnDef="orderTotal">
-    <th cdk-header-cell *cdkHeaderCellDef class="text-right">
-      {{ 'account.approvallist.table.line_item_total' | translate }}
-    </th>
-    <td cdk-cell *cdkCellDef="let requisition" class="text-right">
-      {{ requisition.totals.total | ishPrice: 'gross' }}
-    </td>
-  </ng-container>
-
-  <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
-  <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
-</table>
 
 <ng-template #emptyList>
   <p data-testing-id="emptyList">{{ 'account.approvallist.no_items_message' | translate }}</p>

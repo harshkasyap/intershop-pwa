@@ -27,7 +27,7 @@
     [requisitions]="requisitions$ | async"
     [requisitionStatus]="status$ | async"
     view="buyer"
-    [displayedColumns]="['requisitionNo', 'orderNo', 'creationDate', 'approver', 'approvalDate', 'orderTotal']"
+    [displayedColumns]="displayedColumns"
   ></ish-requisitions-list>
 
   <ish-loading *ngIf="loading$ | async"></ish-loading>
