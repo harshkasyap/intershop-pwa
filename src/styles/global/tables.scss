@@ -274,3 +274,41 @@
     display: none;
   }
 }
+
+// RESPONSIVE TABLE
+// switch to card view for mobile
+table.mobile-optimized {
+  @include media-breakpoint-only(xs) {
+    thead {
+      display: none;
+    }
+
+    tr {
+      float: left;
+      width: 100%;
+      padding-bottom: $space-default * 2/3;
+      margin-bottom: $space-default;
+      border-bottom: 1px solid $border-color-lighter;
+
+      td {
+        display: block;
+        float: left;
+        width: 100%;
+        padding: 0;
+        clear: both;
+        border-top: none;
+
+        &::before {
+          float: left;
+          width: 40%;
+          margin-bottom: $space-default/3;
+          content: attr(data-th);
+        }
+      }
+
+      &:last-child td {
+        border-bottom: none;
+      }
+    }
+  }
+}
